@@ -1,6 +1,3 @@
-# App dictionary listing
-*.json
-
 # App Runtime
 *.pid
 *.log
