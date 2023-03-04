@@ -1,4 +1,4 @@
 # RunTime
-Tooling repo for application projects that I start.
+Application development folders. Intended use is for this folder to be cloned to a common place, then symlinked inside of the .env folder for a Python virtual environment. The locally run applications are then able to all use a common folder no matter the project with localhost certs, folder containing all dotenv files, logs, and pids.
 
-Example usage. Python virtual environments that I create for projects. I symlink this cloned repo. It houses all my certs, dotenv files, app logs, and pids. I point my application configs to use this inside the .env folder and don't need to re-create it for every project I develop. I have all the files I added to the .gitignore so they never get commited. Just the folder structure exists for the purpose of this repo.
+In development: Install script to create new projects from scratch then perform the symlinking command for setup. Additionally a run script is in the works so that common 

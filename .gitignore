@@ -1,3 +1,16 @@
+# App Runtime
+*.pid
+*.log
+*.env
+
+# SSL
+cert.conf
+csr.conf
+*.crt
+*.key
+*.csr
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
