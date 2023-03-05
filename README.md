@@ -18,8 +18,7 @@ Once the repo is cloned and symlinked to the virtual environment folder:
 **Change anything in all caps to whatyou call it.**
 1) `cd /path/to/RunTime`
 2) `touch envs/APPNAME.env`
-3) `python3 -n app-name -p /path/to/RunTime/envs/APPNAME.env -f FRAMEWORK_NAME`
-    - Allowed values for FRAMEWORK_NAME are - `django`, `fastapi`, `python_script`
+3) `python3 -n app-name -d /path/to/RunTime/envs/APPNAME.env -a /path/to/APPNAME/APP.py`
 
 4) `python3 -B run.py -a APPNAME`
 
@@ -49,7 +48,6 @@ I code all my apps to assume local development if a dotenv_path is sent as an ar
 ```
 python3 setup.py \
 --name movie-api \
---framework fastapi \
 --dotenv_path /home/me/GitRepos/RunTime/envs/movie-api.env \
 --app_path /home/me/GitRepos/movie-api/main.py
 ```
