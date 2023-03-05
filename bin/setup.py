@@ -14,30 +14,42 @@ parser = argparse.ArgumentParser(
 )
 allowed_frameworks =['django', 'fastapi', 'python_script']
 parser.add_argument('-n', '--name', type=str, help='Application name. lowercase and hypen used as a word seperator.')
-parser.add_argument('-p', '--path', type=str, help='Path name to a dotenv file.')
+parser.add_argument('-d', '--dotenv_path', type=str, help='Path name to a dotenv file.')
+parser.add_argument('-a', '--app_path', type=str, help='Path to the application file to be run.')
 parser.add_argument('-f', '--framework', type=str, choices=allowed_frameworks , help='Framework that the application uses.')
 args = parser.parse_args()
 app_name = args.name
-dotenv_path = args.path
+dotenv_path = args.dotenv_path
+app_path = args.app_path
 framework = args.framework
 # ---------------------------------------------------------------------------- #
 
-def validate_arguments(app_name:str, dotenv_path:str, framework:str) -> dict:
+def validate_arguments(raw_values:dict) -> dict:
     '''Takes argparse arguments, validates, and returns acceptable values in a dict'''
-    data = {"valid": False, "msg":"", "values":{"app_name":None, "dotenv_path":None}}
-    if not app_name:
-        data['msg'] = f"Argument Missing: -n, --name: {app_name}"
-    elif not dotenv_path:
-        data['msg'] = f"Argument Missing: -p, --path: {dotenv_path}"
-    elif not framework:
-        data['msg'] = f"Argument Missing: -f, --framwork: {framework}"
-    elif not os.path.exists(dotenv_path):
-        data['msg'] = f"Dot Env Path does not exist: {dotenv_path}"
+    raw_app_name = raw_values['app_name']
+    raw_app_path = raw_values['app_path']
+    raw_dotenv_path = raw_values['dotenv_path']
+    raw_framework = raw_values['framework']
+    
+    data = {"valid": False, "msg":"", "values":{"app_name":None, "app_path":None , "dotenv_path":None, "framework":None}}
+    if not raw_app_name:
+        data['msg'] = f"Argument Missing: -n, --name: {raw_app_name}"
+    elif not raw_app_path:
+        data['msg'] = f"Argument Missing: -a, --app_path: {raw_app_path}"
+    elif not raw_dotenv_path:
+        data['msg'] = f"Argument Missing: -d, --dotenv_path: {raw_dotenv_path}"
+    elif not raw_framework:
+        data['msg'] = f"Argument Missing: -f, --framework: {raw_framework}"
+    elif not os.path.exists(raw_dotenv_path):
+        data['msg'] = f"Dot Env Path does not exist: {raw_dotenv_path}"
+    elif not os.path.exists(raw_app_path):
+        data['msg'] = f"App Path does not exist: {raw_app_path}"
     else:
         data['valid'] = True; data['msg'] = "valid"
-        data['values']['app_name'] = app_name.lower().replace("-", "_")
-        data['values']['dotenv_path'] = dotenv_path
-        data['values']['framework'] = framework
+        data['values']['app_name'] = app_name.lower().replace("_", "-").replace(" ", "_")
+        data['values']['app_path'] = raw_app_path
+        data['values']['dotenv_path'] = raw_dotenv_path
+        data['values']['framework'] = raw_framework
     return data
 
 def write_to_json_file(values:dict, filename='app.json'):
@@ -66,11 +78,11 @@ def validate_json_contents(values:dict, filename='app.json'):
                 return True, "JSON data loaded successfully."
         return False, f"Application data is not loaded successfully. Something went wrong.\n {app}"
 
-def main(app_name:str, dotenv_path:str, framework:str):
+def main(raw_values:dict):
     '''Excution procedures for script.'''
     
     # Validate if arguments exist and are acceptable values
-    argument_validation_data = validate_arguments(app_name=app_name, dotenv_path=dotenv_path, framework=framework)
+    argument_validation_data = validate_arguments(raw_values)
     if not argument_validation_data['valid']:
         raise ValueError(f"ERROR: Argument(s) invalid. {argument_validation_data['msg']}")
     
@@ -88,4 +100,5 @@ def main(app_name:str, dotenv_path:str, framework:str):
     print(f"Script Completed: {json_valid_msg}"); quit()
 
 if __name__ == "__main__":
-    main(app_name=app_name, dotenv_path=dotenv_path, framework=framework)
+    values = {"app_name": app_name, "app_path": app_path, "dotenv_path": dotenv_path, "framework":framework}
+    main(raw_values=values)
