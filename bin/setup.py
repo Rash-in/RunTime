@@ -9,7 +9,6 @@ parser = argparse.ArgumentParser(
     description='Setup for application name and path to be put into a json file.',
     epilog='''---'''
 )
-allowed_frameworks =['django', 'fastapi', 'python_script']
 parser.add_argument('-n', '--name', type=str, required=True, help='Application name. lowercase and hypen used as a word seperator.')
 parser.add_argument('-d', '--dotenv_path', type=str, required=True, help='Path name to a dotenv file.')
 parser.add_argument('-a', '--app_path', type=str, required=True, help='Path to the application file to be run.')
