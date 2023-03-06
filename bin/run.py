@@ -42,6 +42,7 @@ def main(application):
     
     app_path = app_data['app_path']
     dotenv_path = app_data['dotenv_path']
+    activate_path = app_data['activate_path']
     
     try:
         os.system(f"python3 -B {app_path} -d {dotenv_path} >&1")
